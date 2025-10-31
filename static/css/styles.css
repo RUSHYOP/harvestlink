@@ -52,7 +52,7 @@ header {
 }
 
 .left-half {
-    background-image: url('images/bg-image.jpeg');
+    background-image: url('../images/bg-image.jpeg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
