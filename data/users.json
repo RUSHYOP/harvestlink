@@ -1,0 +1,32 @@
+{
+  "users": [
+    {
+      "id": "id_1761893317630_32sabq1ms",
+      "email": "farmer@gmail.com",
+      "password": "1234",
+      "userType": "farmer",
+      "firstName": "Farmer",
+      "lastName": "A",
+      "phone": "1234567890",
+      "dateOfBirth": "1980-04-03",
+      "gender": "male",
+      "yearsOfPractice": "15",
+      "state": "Karnataka",
+      "registeredAt": "2025-10-31T06:48:37.631Z"
+    },
+    {
+      "id": "id_1761894771827_j1lrc13hv",
+      "email": "buyer@gmail.com",
+      "password": "1234",
+      "userType": "buyer",
+      "firstName": "buyer",
+      "lastName": "A",
+      "phone": "1234567890",
+      "dateOfBirth": "2000-02-10",
+      "gender": "male",
+      "state": "Gujarat",
+      "businessName": "Buyer Business",
+      "registeredAt": "2025-10-31T07:12:51.828Z"
+    }
+  ]
+}

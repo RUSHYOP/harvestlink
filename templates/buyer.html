@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Buyer Dashboard - Harvest Link</title>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+<body>
+    <header class="dashboard-header">
+        <div class="logo">Harvest Link</div>
+        <div class="user-info">
+            <span class="user-type">Buyer</span>
+            <div class="profile-circle" onclick="toggleProfileMenu()">
+                <span id="userInitials"></span>
+            </div>
+            <div class="profile-menu hidden" id="profileMenu">
+                <div class="profile-name" id="profileName"></div>
+                <button onclick="logout()" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+    </header>
+    <main class="buyer-page-container" style="display:flex; min-height:100vh; width:100vw;">
+        <div class="dashboard" style="flex: 3; padding: 2rem; background-color:#FAF8F5;">
+            <div class="dashboard-content">
+                <section class="dashboard-section">
+                    <div class="section-header">
+                        <h2>Available Stock</h2>
+                        <div class="filter-controls">
+                            <input type="text" id="searchCrop" placeholder="Search by crop name..." />
+                            <select id="filterState">
+                                <option value="">All States</option>
+                            </select>
+                            <select id="filterQuality">
+                                <option value="">All Quality</option>
+                                <option value="excellent">Excellent</option>
+                                <option value="average">Average</option>
+                                <option value="poor">Poor</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="stock-grid" id="stockGrid">
+                        </div>
+                </section>
+
+                <section class="dashboard-section">
+                    <div class="section-header">
+                        <h2>My Booked Orders</h2>
+                    </div>
+                    <div class="orders-container" id="ordersContainer">
+                        </div>
+                </section>
+
+                <section class="dashboard-section">
+                    <div class="section-header">
+                        <h2>Know Some of Our Farmers</h2>
+                    </div>
+                    <div class="farmers-grid">
+                        <div class="farmer-card">
+                            <img src="/static/images/farmer with rice.jpeg" alt="rice" />
+                            <p class="farmer-description">Venkatappa M is a humble rice farmer from Koppal, Karnataka, who has been lovingly tending to his fields for over 50 years. His dedication shines through in the quality of his crop.</p>
+                        </div>
+                        <div class="farmer-card">
+                            <img src="/static/images/farmer with onion.jpg" alt="onion" />
+                            <p class="farmer-description">Nagesh Desai from Belgavi, Karnataka, has been cultivating onions for 35 years with remarkable dedication. His commitment and hard work reflect a genuine love for the land.</p>
+                        </div>
+                        <div class="farmer-card">
+                            <img src="/static/images/farmer with potato.jpg" alt="potato" />
+                            <p class="farmer-description">Shiva Reddy from Kolar, Karnataka, has been cultivating potatoes for 25 years. Shiva’s pride in quality and sustainable practices supports his community and preserves the land.</p>
+                        </div>
+                        <div class="farmer-card">
+                            <img src="/static/images/farmer with milk.jpeg" alt="milk" />
+                            <p class="farmer-description">Shivananjaiah Balekayi from Tumkur, Karnataka, has been dedicated to dairy farming for 35 years. He’s respected for his honesty, hard work, and passion for fresh, nutritious milk.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <aside class="health-benefits" style="flex:1; background:#FFFFFF; padding:2rem; box-shadow: -2px 0 8px rgba(0,0,0,0.05);">
+            <h2 style="color:#228B22; font-size:2rem; margin-bottom:1rem;">Health Benefits</h2>
+            <div class="health-cards">
+                <div class="health-card">
+                    <h3>Rice</h3>
+                    <ul>
+                        <li>Provides quick and lasting energy.</li>
+                        <li>Supports metabolism and immunity.</li>
+                    </ul>
+                </div>
+                <div class="health-card">
+                    <h3>Onion</h3>
+                    <ul>
+                        <li>Rich in vitamin C to support immunity.</li>
+                        <li>High in fiber for digestive health.</li>
+                    </ul>
+                </div>
+                <div class="health-card">
+                    <h3>Potato</h3>
+                    <ul>
+                        <li>Rich in vitamin C and potassium.</li>
+                        <li>Protects cells from damage.</li>
+                    </ul>
+                </div>
+                <div class="health-card">
+                    <h3>Milk</h3>
+                    <ul>
+                        <li>Strengthens bones and teeth.</li>
+                        <li>Contains B12 for immune support.</li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+    </main>
+    <div class="modal" id="buyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Place Order</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div id="buyModalDetails"></div>
+            <form id="buyForm">
+                <input type="hidden" id="buyInventoryId" />
+                <input type="hidden" id="buyMaxQuantity" />
+                <input type="hidden" id="buyPricePerKg" />
+                <label for="buyQuantity">Quantity (kg):</label>
+                <input type="number" id="buyQuantity" placeholder="Enter quantity" min="0.01" step="0.01" required />
+                <div class="total-price">
+                    <strong>Total Price: ₹<span id="totalPrice">0.00</span></strong>
+                </div>
+                <button type="submit" class="btn btn-primary">Confirm Order</button>
+                <button type="button" class="btn btn-secondary">Cancel</button>
+            </form>
+        </div>
+    </div>
+    <script src="/static/js/script.js"></script>
+    <script src="/static/js/buyer.js"></script>
+</body>
+</html>

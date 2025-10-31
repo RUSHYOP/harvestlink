@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harvest Link - Connecting Farmers & Buyers</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="landing-page">
+        <header>
+            <div class="logo">Harvest Link</div>
+        </header>
+
+        <div class="main-content">
+            <div class="left-half">
+    <div class="about-section">
+        <h1>Welcome to Harvest Link</h1>
+
+        <div class="info-block">
+            <h2>Who We Are</h2>
+            <p>Harvest Link is a revolutionary digital platform that bridges the gap between local farmers and buyers, creating a transparent and efficient marketplace for agricultural produce.</p>
+        </div>
+
+        <div class="info-block">
+            <h2>What We Do</h2>
+            <p>We provide a direct connection between farmers and buyers, eliminating middlemen and ensuring fair prices for quality produce. Our platform enables farmers to showcase their inventory and buyers to access fresh, locally-sourced agricultural products.</p>
+        </div>
+
+        <div class="info-block">
+            <h2>Our Initiatives</h2>
+            <ul>
+                <li>Empowering farmers with direct market access</li>
+                <li>Ensuring fair pricing and transparency</li>
+                <li>Reducing post-harvest losses</li>
+                <li>Supporting local agriculture and food security</li>
+                <li>Building sustainable supply chains</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+            <div class="right-half">
+                <video class="background-video" autoplay muted loop>
+                    <source src="/static/videos/bg-video.mp4" type="video/mp4">
+                </video>
+
+    <div class="video-overlay"></div>
+                <div class="auth-container" id="authContainer">
+                    <div class="auth-panel" id="choicePanel">
+                        <h2>Get Started</h2>
+                        <p>Join our community today</p>
+                        <div class="button-group">
+                            <button class="btn btn-primary" onclick="showRegisterFarmer()">Register as Farmer</button>
+                            <button class="btn btn-primary" onclick="showRegisterBuyer()">Register as Buyer</button>
+                            <button class="btn btn-secondary" onclick="showLogin()">Already have an account? Login</button>
+                        </div>
+                    </div>
+
+                    <div class="auth-panel hidden" id="registerFarmerPanel">
+                        <h2>Register as Farmer</h2>
+                        <form id="farmerRegisterForm" onsubmit="registerFarmer(event)">
+                            <div class="form-row">
+                                <input type="text" id="farmerFirstName" placeholder="First Name" required>
+                                <input type="text" id="farmerLastName" placeholder="Last Name" required>
+                            </div>
+                            <input type="email" id="farmerEmail" placeholder="Email" required>
+                            <input type="tel" id="farmerPhone" placeholder="Phone Number" required>
+                            <input type="date" id="farmerDOB" placeholder="Date of Birth" required>
+                            <select id="farmerGender" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <input type="number" id="farmerExperience" placeholder="Years of Practice" min="0" required>
+                            <select id="farmerState" required>
+                                <option value="">Select State</option>
+                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                <option value="Assam">Assam</option>
+                                <option value="Bihar">Bihar</option>
+                                <option value="Chhattisgarh">Chhattisgarh</option>
+                                <option value="Goa">Goa</option>
+                                <option value="Gujarat">Gujarat</option>
+                                <option value="Haryana">Haryana</option>
+                                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                <option value="Jharkhand">Jharkhand</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Kerala">Kerala</option>
+                                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option value="Manipur">Manipur</option>
+                                <option value="Meghalaya">Meghalaya</option>
+                                <option value="Mizoram">Mizoram</option>
+                                <option value="Nagaland">Nagaland</option>
+                                <option value="Odisha">Odisha</option>
+                                <option value="Punjab">Punjab</option>
+                                <option value="Rajasthan">Rajasthan</option>
+                                <option value="Sikkim">Sikkim</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <option value="Telangana">Telangana</option>
+                                <option value="Tripura">Tripura</option>
+                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                <option value="Uttarakhand">Uttarakhand</option>
+                                <option value="West Bengal">West Bengal</option>
+                            </select>
+                            <input type="password" id="farmerPassword" placeholder="Password" required>
+                            <input type="password" id="farmerConfirmPassword" placeholder="Confirm Password" required>
+                            <button type="submit" class="btn btn-primary">Register</button>
+                            <button type="button" class="btn btn-secondary" onclick="showChoice()">Back</button>
+                        </form>
+                    </div>
+
+                    <div class="auth-panel hidden" id="registerBuyerPanel">
+                        <h2>Register as Buyer</h2>
+                        <form id="buyerRegisterForm" onsubmit="registerBuyer(event)">
+                            <div class="form-row">
+                                <input type="text" id="buyerFirstName" placeholder="First Name" required>
+                                <input type="text" id="buyerLastName" placeholder="Last Name" required>
+                            </div>
+                            <input type="email" id="buyerEmail" placeholder="Email" required>
+                            <input type="tel" id="buyerPhone" placeholder="Phone Number" required>
+                            <input type="date" id="buyerDOB" placeholder="Date of Birth" required>
+                            <select id="buyerGender" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <select id="buyerState" required>
+                                <option value="">Select State</option>
+                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                <option value="Assam">Assam</option>
+                                <option value="Bihar">Bihar</option>
+                                <option value="Chhattisgarh">Chhattisgarh</option>
+                                <option value="Goa">Goa</option>
+                                <option value="Gujarat">Gujarat</option>
+                                <option value="Haryana">Haryana</option>
+                                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                <option value="Jharkhand">Jharkhand</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Kerala">Kerala</option>
+                                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option value="Manipur">Manipur</option>
+                                <option value="Meghalaya">Meghalaya</option>
+                                <option value="Mizoram">Mizoram</option>
+                                <option value="Nagaland">Nagaland</option>
+                                <option value="Odisha">Odisha</option>
+                                <option value="Punjab">Punjab</option>
+                                <option value="Rajasthan">Rajasthan</option>
+                                <option value="Sikkim">Sikkim</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <option value="Telangana">Telangana</option>
+                                <option value="Tripura">Tripura</option>
+                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                <option value="Uttarakhand">Uttarakhand</option>
+                                <option value="West Bengal">West Bengal</option>
+                            </select>
+                            <input type="text" id="buyerBusinessName" placeholder="Business Name (Optional)">
+                            <input type="password" id="buyerPassword" placeholder="Password" required>
+                            <input type="password" id="buyerConfirmPassword" placeholder="Confirm Password" required>
+                            <button type="submit" class="btn btn-primary">Register</button>
+                            <button type="button" class="btn btn-secondary" onclick="showChoice()">Back</button>
+                        </form>
+                    </div>
+
+                    <div class="auth-panel hidden" id="loginPanel">
+                        <h2>Login</h2>
+                        <form id="loginForm" onsubmit="login(event)">
+                            <input type="email" id="loginEmail" placeholder="Email" required>
+                            <input type="password" id="loginPassword" placeholder="Password" required>
+                            <button type="submit" class="btn btn-primary">Login</button>
+                            <button type="button" class="btn btn-secondary" onclick="showChoice()">Back</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

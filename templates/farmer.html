@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Farmer Dashboard - Harvest Link</title>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+<body>
+    <div class="dashboard">
+        <header class="dashboard-header">
+            <div class="logo">Harvest Link</div>
+            <div class="user-info">
+                <span class="user-type">Farmer</span>
+                <div class="profile-circle" onclick="toggleProfileMenu()" id="profileCircle">
+                    <span id="userInitials"></span>
+                </div>
+                <div class="profile-menu hidden" id="profileMenu">
+                    <div class="profile-name" id="profileName"></div>
+                    <button id="logoutBtn" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+            <section class="dashboard-section">
+                <div class="section-header">
+                    <h2>My Inventory</h2>
+                    <button id="addCropBtn" class="btn btn-primary">+ Add Crop</button>
+                </div>
+                <div class="inventory-grid" id="inventoryGrid">
+                    </div>
+            </section>
+
+            <section class="dashboard-section">
+                <div class="section-header">
+                    <h2>Ongoing Orders</h2>
+                </div>
+                <div class="orders-container" id="ordersContainer">
+                    </div>
+            </section>
+        </div>
+    </div>
+
+    <div class="modal" id="addCropModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Crop to Inventory</h2>
+                <span id="closeAddCropModalBtn" class="close">&times;</span>
+            </div>
+            <form id="addCropForm">
+                <input type="text" id="cropName" placeholder="Crop Name" list="cropsList" required />
+                <datalist id="cropsList">
+                    </datalist>
+                <input type="number" id="totalQuantity" placeholder="Total Quantity (kg)" min="1" step="0.01" required />
+                <input type="number" id="pricePerKg" placeholder="Price per kg (₹)" min="0.01" step="0.01" required />
+                <select id="quality" required>
+                    <option value="">Select Quality</option>
+                    <option value="excellent">Excellent</option>
+                    <option value="average">Average</option>
+                    <option value="poor">Poor</option>
+                </select>
+                <button id="submitAddCropBtn" type="submit" class="btn btn-primary">Add to Inventory</button>
+                <button id="cancelAddCropBtn" type="button" class="btn btn-secondary">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="editCropModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Crop</h2>
+                <span id="closeEditCropModalBtn" class="close">&times;</span>
+            </div>
+            <form id="editCropForm">
+                <input type="hidden" id="editCropId" />
+                <input type="text" id="editCropName" placeholder="Crop Name" disabled />
+                <input type="number" id="editTotalQuantity" placeholder="Total Quantity (kg)" min="1" step="0.01" required />
+                <input type="number" id="editPricePerKg" placeholder="Price per kg (₹)" min="0.01" step="0.01" required />
+                <select id="editQuality" required>
+                    <option value="">Select Quality</option>
+                    <option value="excellent">Excellent</option>
+                    <option value="average">Average</option>
+                    <option value="poor">Poor</option>
+                </select>
+                <button id="submitEditCropBtn" type="submit" class="btn btn-primary">Update</button>
+                <button id="cancelEditCropBtn" type="button" class="btn btn-secondary">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+    <script src="/static/js/farmer.js"></script>
+</body>
+</html>
