@@ -4,24 +4,15 @@
     {
       "src": "server.py",
       "use": "@vercel/python"
-    },
-    {
-      "src": "static/**",
-      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "server.py"
-    },
-    {
       "src": "/(.*)",
       "dest": "server.py"
     }
-  ]
+  ],
+  "env": {
+    "PYTHONUNBUFFERED": "1"
+  }
 }

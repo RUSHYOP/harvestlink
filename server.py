@@ -24,13 +24,11 @@ app.config['JSON_SORT_KEYS'] = False
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max request size
 
 # Logging configuration
+# Use StreamHandler only for Vercel compatibility (no file system writes)
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('app.log'),
-        logging.StreamHandler()
-    ]
+    handlers=[logging.StreamHandler()]
 )
 logger = logging.getLogger(__name__)
 
@@ -58,23 +56,40 @@ def get_db():
         logger.error(f"Error initializing MongoDB: {e}")
         raise
 
-# Initialize database
-try:
-    db = get_db()
+# Initialize database - Lazy initialization for serverless
+db = None
+users_collection = None
+inventory_collection = None
+orders_collection = None
+crops_collection = None
+
+def init_db():
+    """Initialize database connection (called on first request)"""
+    global db, users_collection, inventory_collection, orders_collection, crops_collection
     
-    # Create collections
-    users_collection = db['users']
-    inventory_collection = db['inventory']
-    orders_collection = db['orders']
-    crops_collection = db['crops']
+    if db is not None:
+        return db
     
-    # Create unique index on email for users
-    users_collection.create_index('email', unique=True)
-    
-    logger.info("MongoDB collections initialized successfully")
-except Exception as e:
-    logger.error(f"Failed to initialize MongoDB: {e}")
-    db = None
+    try:
+        db = get_db()
+        
+        # Create collections
+        users_collection = db['users']
+        inventory_collection = db['inventory']
+        orders_collection = db['orders']
+        crops_collection = db['crops']
+        
+        # Create unique index on email for users
+        try:
+            users_collection.create_index('email', unique=True)
+        except:
+            pass  # Index might already exist
+        
+        logger.info("MongoDB collections initialized successfully")
+        return db
+    except Exception as e:
+        logger.error(f"Failed to initialize MongoDB: {e}")
+        return None
 
 # --- Security & Validation ---
 def validate_email(email):
@@ -98,6 +113,9 @@ def handle_errors(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         try:
+            # Initialize database on first request
+            if db is None:
+                init_db()
             if db is None:
                 return jsonify({'error': 'Database connection not available'}), 503
             return f(*args, **kwargs)
@@ -435,6 +453,9 @@ if __name__ == '__main__':
     port = int(os.environ.get('PORT', 3000))
     debug_mode = os.environ.get('FLASK_ENV', 'development') == 'development'
     
+    # Initialize database for local development
+    init_db()
+    
     logger.info("=" * 60)
     logger.info("HARVEST LINK SERVER (MongoDB) STARTING...")
     logger.info(f"Server running at: http://localhost:{port}")
@@ -443,3 +464,7 @@ if __name__ == '__main__':
     logger.info("=" * 60)
     
     app.run(host='0.0.0.0', port=port, debug=debug_mode)
+
+# Export app for Vercel
+# This allows Vercel to use the app as a WSGI application
+application = app
