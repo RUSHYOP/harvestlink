@@ -1,0 +1,34 @@
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+app.log
+
+# Virtual environments
+venv/
+env/
+ENV/
+harvest/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Data files
+data/
+
+# IDE
+.vscode/
+.idea/
+
+# Testing
+.pytest_cache/
+.coverage
+
+# OS files
+.DS_Store
+Thumbs.db

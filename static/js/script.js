@@ -128,110 +128,166 @@ function closeProfileMenuOnClickOutside(event) {
 
 async function registerFarmer(event) {
     event.preventDefault();
-    const email = document.getElementById('farmerEmail').value;
+    const form = event.target;
+
+    // Validate form
+    if (!validateForm(form)) {
+        toast.error('Please fix the errors in the form');
+        return;
+    }
+
+    const email = document.getElementById('farmerEmail').value.trim();
     const password = document.getElementById('farmerPassword').value;
     const confirmPassword = document.getElementById('farmerConfirmPassword').value;
 
     if (password !== confirmPassword) {
-        alert('Passwords do not match!');
+        toast.error('Passwords do not match!');
+        return;
+    }
+
+    if (password.length < 6) {
+        toast.error('Password must be at least 6 characters long');
         return;
     }
 
     try {
         const users = await getUsers();
-        if (users.find(u => u.email === email)) {
-            alert('This email is already registered. Please login.');
+        if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
+            toast.warning('This email is already registered. Please login.');
             return;
         }
         
         const newUser = {
             id: generateId(),
-            email,
+            email: email.toLowerCase(),
             password, // In a real app, this should be hashed server-side
             userType: 'farmer',
-            firstName: document.getElementById('farmerFirstName').value,
-            lastName: document.getElementById('farmerLastName').value,
-            phone: document.getElementById('farmerPhone').value,
+            firstName: document.getElementById('farmerFirstName').value.trim(),
+            lastName: document.getElementById('farmerLastName').value.trim(),
+            phone: document.getElementById('farmerPhone').value.trim(),
             dateOfBirth: document.getElementById('farmerDOB').value,
             gender: document.getElementById('farmerGender').value,
             yearsOfPractice: document.getElementById('farmerExperience').value,
             state: document.getElementById('farmerState').value,
             registeredAt: new Date().toISOString()
         };
+        
         await saveUser(newUser);
-        alert('Registration successful! Please login.');
-        showLogin();
-        document.getElementById('farmerRegisterForm').reset();
+        toast.success('Registration successful! Please login.');
+        setTimeout(() => {
+            showLogin();
+            document.getElementById('farmerRegisterForm').reset();
+        }, 1500);
     } catch (error) {
-        alert('Error during registration: ' + error.message);
+        toast.error('Error during registration: ' + error.message);
     }
 }
 
 async function registerBuyer(event) {
     event.preventDefault();
-    const email = document.getElementById('buyerEmail').value;
+    const form = event.target;
+
+    // Validate form
+    if (!validateForm(form)) {
+        toast.error('Please fix the errors in the form');
+        return;
+    }
+
+    const email = document.getElementById('buyerEmail').value.trim();
     const password = document.getElementById('buyerPassword').value;
     const confirmPassword = document.getElementById('buyerConfirmPassword').value;
 
     if (password !== confirmPassword) {
-        alert('Passwords do not match!');
+        toast.error('Passwords do not match!');
+        return;
+    }
+
+    if (password.length < 6) {
+        toast.error('Password must be at least 6 characters long');
         return;
     }
 
     try {
         const users = await getUsers();
-        if (users.find(u => u.email === email)) {
-            alert('This email is already registered. Please login.');
+        if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
+            toast.warning('This email is already registered. Please login.');
             return;
         }
         
         const newUser = {
             id: generateId(),
-            email,
+            email: email.toLowerCase(),
             password,
             userType: 'buyer',
-            firstName: document.getElementById('buyerFirstName').value,
-            lastName: document.getElementById('buyerLastName').value,
-            phone: document.getElementById('buyerPhone').value,
+            firstName: document.getElementById('buyerFirstName').value.trim(),
+            lastName: document.getElementById('buyerLastName').value.trim(),
+            phone: document.getElementById('buyerPhone').value.trim(),
             dateOfBirth: document.getElementById('buyerDOB').value,
             gender: document.getElementById('buyerGender').value,
             state: document.getElementById('buyerState').value,
-            businessName: document.getElementById('buyerBusinessName').value || '',
+            businessName: document.getElementById('buyerBusinessName').value.trim() || '',
             registeredAt: new Date().toISOString()
         };
+        
         await saveUser(newUser);
-        alert('Registration successful! Please login.');
-        showLogin();
-        document.getElementById('buyerRegisterForm').reset();
+        toast.success('Registration successful! Please login.');
+        setTimeout(() => {
+            showLogin();
+            document.getElementById('buyerRegisterForm').reset();
+        }, 1500);
     } catch (error) {
-        alert('Error during registration: ' + error.message);
+        toast.error('Error during registration: ' + error.message);
     }
 }
 
 async function login(event) {
     event.preventDefault();
-    const email = document.getElementById('loginEmail').value;
+    const form = event.target;
+
+    // Validate form
+    if (!validateForm(form)) {
+        toast.error('Please enter your credentials');
+        return;
+    }
+
+    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
     const password = document.getElementById('loginPassword').value;
 
     try {
-        const users = await getUsers();
-        const user = users.find(u => u.email === email && u.password === password);
-        if (!user) {
-            alert('Invalid email or password!');
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+            toast.error(data.error || 'Invalid email or password!');
             return;
         }
-        currentUser = user;
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        redirectToDashboard();
+        
+        currentUser = data.user;
+        Storage.set('currentUser', data.user);
+        toast.success(`Welcome back, ${data.user.firstName}!`);
+        
+        setTimeout(() => {
+            redirectToDashboard();
+        }, 1000);
     } catch (error) {
-        alert('Error during login: ' + error.message);
+        toast.error('Error during login: ' + error.message);
     }
 }
 
 function logout() {
-    currentUser = null;
-    localStorage.removeItem('currentUser');
-    window.location.href = '/'; // Redirect to root
+    if (confirm('Are you sure you want to logout?')) {
+        currentUser = null;
+        Storage.remove('currentUser');
+        toast.info('You have been logged out successfully');
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 1000);
+    }
 }
 
 // **THIS FUNCTION IS NOW CORRECTED**

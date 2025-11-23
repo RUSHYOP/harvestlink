@@ -160,24 +160,34 @@ function calculateTotal() {
 
 async function placeOrder(event) {
     event.preventDefault();
+    const form = event.target;
+
+    // Validate form
+    if (!validateForm(form)) {
+        toast.error('Please enter a valid quantity');
+        return;
+    }
+
     const inventoryId = document.getElementById('buyInventoryId').value;
     const quantity = parseFloat(document.getElementById('buyQuantity').value);
     const maxQuantity = parseFloat(document.getElementById('buyMaxQuantity').value);
 
     if (quantity <= 0) {
-        alert('Please enter a valid quantity.');
+        toast.error('Please enter a valid quantity.');
         return;
     }
     if (quantity > maxQuantity) {
-        alert('Quantity exceeds available stock!');
+        toast.error(`Quantity exceeds available stock! Maximum available: ${maxQuantity} kg`);
         return;
     }
 
     try {
-        const inventory = await getInventory(); // Fetch latest inventory to get farmer details
+        const inventory = await getInventory();
         const item = inventory.find(i => i.id === inventoryId);
         if (!item) {
-            alert('This item is no longer available.');
+            toast.error('This item is no longer available.');
+            closeBuyModal();
+            await loadStock();
             return;
         }
 
@@ -204,15 +214,19 @@ async function placeOrder(event) {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(order),
         });
-        if (!response.ok) throw new Error('Failed to place order');
         
-        alert('Order placed successfully!');
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to place order');
+        }
+        
+        toast.success(`Order placed successfully! Total: ${formatCurrency(order.totalPrice)}`);
         closeBuyModal();
         await loadStock();
         await loadBuyerOrders();
 
     } catch (error) {
-        alert(error.message);
+        toast.error(error.message);
     }
 }
 

@@ -78,10 +78,17 @@ function closeAddCropModal() {
 
 async function addCrop(event) {
     event.preventDefault();
+    const form = event.target;
+
+    // Validate form
+    if (!validateForm(form)) {
+        toast.error('Please fill in all required fields correctly');
+        return;
+    }
 
     const cropName = document.getElementById('cropName').value.trim();
     if (!await validateCropName(cropName)) {
-        alert('Invalid crop name! Please select a valid crop from the list.');
+        toast.error('Invalid crop name! Please select a valid crop from the list.');
         return;
     }
 
@@ -105,12 +112,17 @@ async function addCrop(event) {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(inventoryItem)
         });
-        if (!response.ok) throw new Error('Failed to add crop to inventory');
-        alert('Crop added successfully!');
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to add crop to inventory');
+        }
+        
+        toast.success(`${cropName} added to inventory successfully!`);
         closeAddCropModal();
         await loadInventory();
     } catch (error) {
-        alert(error.message);
+        toast.error(error.message);
     }
 }
 
@@ -184,15 +196,23 @@ function closeEditCropModal() {
 
 async function updateCrop(event) {
     event.preventDefault();
+    const form = event.target;
+
+    // Validate form
+    if (!validateForm(form)) {
+        toast.error('Please fill in all required fields correctly');
+        return;
+    }
+
     const cropId = document.getElementById('editCropId').value;
     
     try {
-        const inventory = await getInventory(); // Get original item
+        const inventory = await getInventory();
         const originalItem = inventory.find(i => i.id === cropId);
         if (!originalItem) throw new Error('Item not found');
 
         const updatedItem = {
-            ...originalItem, // Preserve original fields like farmerId, etc.
+            ...originalItem,
             totalQuantity: parseFloat(document.getElementById('editTotalQuantity').value),
             pricePerKg: parseFloat(document.getElementById('editPricePerKg').value),
             quality: document.getElementById('editQuality').value,
@@ -203,13 +223,17 @@ async function updateCrop(event) {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(updatedItem)
         });
-        if (!response.ok) throw new Error('Failed to update crop');
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to update crop');
+        }
 
-        alert('Crop updated successfully!');
+        toast.success('Crop updated successfully!');
         closeEditCropModal();
         await loadInventory();
     } catch (error) {
-        alert(error.message);
+        toast.error(error.message);
     }
 }
 
@@ -219,17 +243,21 @@ async function deleteCrop(cropId) {
     try {
         const orders = await getOrders();
         if (orders.some(order => order.inventoryId === cropId && order.status === 'active')) {
-            alert('Cannot delete this crop as there are active orders for it.');
+            toast.warning('Cannot delete this crop as there are active orders for it.');
             return;
         }
 
         const response = await fetch(`/api/inventory/${cropId}`, { method: 'DELETE' });
-        if (!response.ok) throw new Error('Failed to delete crop from server');
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to delete crop');
+        }
 
-        alert('Crop deleted successfully!');
+        toast.success('Crop deleted successfully!');
         await loadInventory();
     } catch (error) {
-        alert(error.message);
+        toast.error(error.message);
     }
 }
 
@@ -290,12 +318,16 @@ async function cancelOrder(orderId) {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(orderToCancel)
         });
-        if (!response.ok) throw new Error('Failed to cancel order');
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to cancel order');
+        }
 
-        alert('Order cancelled successfully!');
+        toast.success('Order cancelled successfully!');
         await loadOrders();
-        await loadInventory(); // Refresh inventory to update available quantity
+        await loadInventory();
     } catch (error) {
-        alert(error.message);
+        toast.error(error.message);
     }
 }
