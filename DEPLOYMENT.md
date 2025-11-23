@@ -30,10 +30,10 @@ git log --all --full-history -- .env
 # Search for MongoDB connection strings
 git grep -i "mongodb+srv://"
 
-# Search for potential passwords
-git grep -i "Di5yQqQDFWlzetkr"
+# Search for any exposed credentials
+git grep -i "password.*mongodb"
 ```
-**Expected:** Only examples in `.env.example` or `SECURITY.md`
+**Expected:** Only example formats in documentation (no real credentials)
 
 ---
 

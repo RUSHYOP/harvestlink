@@ -50,12 +50,12 @@ Add these **4 variables**:
 |----------|-------|----------|
 | `MONGODB_URI` | Your connection string | Copy from MongoDB Atlas |
 | `DATABASE_NAME` | `harvestlink` | Type it |
-| `SECRET_KEY` | See below ⬇️ | Generated for you |
+| `SECRET_KEY` | Generate a random key | Use command below ⬇️ |
 | `FLASK_ENV` | `production` | Type it |
 
-**Your production SECRET_KEY:**
-```
-42940415e17c49a94f77ba05d5f70b0ebc73244190e0b809fdfd318034d606d8
+**Generate your SECRET_KEY:**
+```bash
+python -c "import secrets; print(secrets.token_hex(32))"
 ```
 
 **Your MongoDB URI format:**
@@ -168,9 +168,9 @@ git log --all --full-history -- .env
 
 ### Test 3: Search for Secrets
 ```bash
-git grep -i "Di5yQqQDFWlzetkr"
+git grep -i "mongodb+srv"
 ```
-**Expected:** No matches (your old password not in code)
+**Expected:** Only example formats in documentation (no real credentials)
 
 ### Test 4: Run Security Scanner
 ```bash
