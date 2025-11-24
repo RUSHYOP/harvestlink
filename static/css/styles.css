@@ -83,16 +83,6 @@ html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
-    overflow: hidden;
-}
-
-html::-webkit-scrollbar {
-    display: none;
-}
-
-html {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
 }
 
 body {
@@ -100,26 +90,25 @@ body {
     background-color: var(--bg-secondary);
     color: var(--text-primary);
     line-height: 1.6;
-    overflow-x: hidden;
 }
 
-body::-webkit-scrollbar {
-    display: none;
-}
-
-body {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-/* Custom Scrollbar - Hidden */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-    display: none;
+    width: 8px;
+    height: 8px;
 }
 
-* {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+::-webkit-scrollbar-track {
+    background: var(--gray-100);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gray-400);
+    border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--gray-500);
 }
 
 /* Selection */
@@ -448,14 +437,7 @@ input:disabled, select:disabled, textarea:disabled {
     overflow: hidden;
 }
 
-.landing-page::-webkit-scrollbar {
-    display: none;
-}
 
-.landing-page {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
 
 /* Header */
 header {
@@ -504,12 +486,6 @@ header {
     justify-content: center;
     position: relative;
     overflow-y: auto;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-}
-
-.left-half::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
 }
 
 .about-section {
